@@ -85,18 +85,20 @@ jobs:
             "达到长度限制, 其他日志请查看:"
             "https://github.com/CH3NGYZ/Overcooked-2-LobbyMOD/blob/main/releaseNote.txt"
             
-      # - name: Create Release
-      #   id: create_release
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     files: CHA.zip
-      #     tag_name: v${{ steps.calculate_version.outputs.new_version }}
-      #     name: v${{ steps.calculate_version.outputs.new_version }}
-      #     body: |
-      #       v${{ steps.calculate_version.outputs.new_version }} ${{ steps.get_utc8_date.outputs.date_utc8 }}
-      #       ${{ (github.event.head_commit.message -split "`r`n" | Where-Object { $_.Trim() -ne '' }) -join "`r`n" }}
-      #       .
-      #       $((Get-Content releaseNote.txt | Select-Object -First 20) -join "`r`n")
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: CHA.zip
+          tag_name: v${{ steps.calculate_version.outputs.new_version }}
+          name: v${{ steps.calculate_version.outputs.new_version }}
+          body: |
+            v${{ steps.calculate_version.outputs.new_version }} ${{ steps.get_utc8_date.outputs.date_utc8 }}
+            ${{ (github.event.head_commit.message -split "`r`n" | Where-Object { $_.Trim() -ne '' }) -join "`r`n" }}
+            .
+            $((Get-Content releaseNote.txt | Select-Object -First 20) -join "`r`n")
+            达到长度限制, 其他日志请查看:
+            https://github.com/CH3NGYZ/Overcooked-2-LobbyMOD/blob/main/releaseNote.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 

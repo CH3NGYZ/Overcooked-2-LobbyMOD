@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'LobbyMOD/**'
+  workflow_dispatch:
 
 
 jobs:

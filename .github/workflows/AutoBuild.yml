@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'LobbyMOD/**'
+  workflow_dispatch:
+
 
 jobs:
   build:
@@ -11,7 +15,13 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v1
-
+        
+      - name: Get UTC+8 Date
+        id: get_utc8_date
+        run: |
+          $dateUtc8 = (Get-Date).AddHours(8).ToString("yyyy-MM-dd HH:mm:ss")
+          echo "::set-output name=date_utc8::$dateUtc8"
+          
       - name: Copy Project File
         run: |
           copy LobbyMOD.csproj LobbyMOD/LobbyMOD/
@@ -62,15 +72,29 @@ jobs:
         id: calculate_version
         run: |
           echo "::set-output name=new_version::1.0.$((${{ steps.extract_version.outputs.version }} + 1))"
+      - name: show params
+        id: show_param
+        run: |
+          echo "tag_name: v${{ steps.calculate_version.outputs.new_version }}"
+          echo "name: v${{ steps.calculate_version.outputs.new_version }}"
+          echo "body: |"
+            "v${{ steps.calculate_version.outputs.new_version }} ${{ steps.get_utc8_date.outputs.date_utc8 }}"
+            "${{ github.event.head_commit.message }}"
+            "."
+            "$((Get-Content releaseNote.txt | Select-Object -First 20) -join "`r`n")"
+            
+      # - name: Create Release
+      #   id: create_release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     files: CHA.zip
+      #     tag_name: v${{ steps.calculate_version.outputs.new_version }}
+      #     name: v${{ steps.calculate_version.outputs.new_version }}
+      #     body: |
+      #       v${{ steps.calculate_version.outputs.new_version }} ${{ steps.get_utc8_date.outputs.date_utc8 }}
+      #       ${{ github.event.head_commit.message }}
+      #       .
+      #       $(Get-Content releaseNote.txt | Select-Object -First 80)
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: CHA.zip
-          tag_name: v${{ steps.calculate_version.outputs.new_version }}
-          name: v${{ steps.calculate_version.outputs.new_version }}
-          body: |
-            ${{ github.event.head_commit.message }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

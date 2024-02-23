@@ -1,7 +1,7 @@
 ﻿using BepInEx.Configuration;
 using System.Collections.Generic;
 using UnityEngine;
-
+ 
 namespace LobbyMODS
 {
     public static class DisplayKickedUserUI

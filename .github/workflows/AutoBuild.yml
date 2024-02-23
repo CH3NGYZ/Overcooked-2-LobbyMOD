@@ -80,6 +80,8 @@ jobs:
           echo "body: |"
             "v${{ steps.calculate_version.outputs.new_version }} ${{ steps.get_utc8_date.outputs.date_utc8 }}"
             "${{ github.event.head_commit.message }}"
+            "."
+            "$(Get-Content releaseNote.txt | Select-Object -First 20)"
             
       # - name: Create Release
       #   id: create_release
@@ -91,6 +93,8 @@ jobs:
       #     body: |
       #       v${{ steps.calculate_version.outputs.new_version }} ${{ steps.get_utc8_date.outputs.date_utc8 }}
       #       ${{ github.event.head_commit.message }}
+      #       .
+      #       $(Get-Content releaseNote.txt | Select-Object -First 80)
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 

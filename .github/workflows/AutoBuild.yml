@@ -81,7 +81,7 @@ jobs:
             "v${{ steps.calculate_version.outputs.new_version }} ${{ steps.get_utc8_date.outputs.date_utc8 }}"
             "${{ github.event.head_commit.message }}"
             "."
-            "$(Get-Content releaseNote.txt | Select-Object -First 20)"
+            "$((Get-Content releaseNote.txt | Select-Object -First 20) -join "`r`n")"
             
       # - name: Create Release
       #   id: create_release

@@ -19,7 +19,7 @@ jobs:
       - name: Get UTC+8 Date
         id: get_utc8_date
         run: |
-          $dateUtc8 = Get-Date -Format "yyyy-MM-dd HH:mm:ss" -TimeZone "Asia/Shanghai"
+          $dateUtc8 = (Get-Date).AddHours(8).ToString("yyyy-MM-dd HH:mm:ss")
           echo "::set-output name=date_utc8::$dateUtc8"
           
       - name: Copy Project File

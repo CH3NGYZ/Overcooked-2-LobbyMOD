@@ -61,23 +61,26 @@ jobs:
         id: get_tag
         run: |
           echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
+          echo "$(git describe --tags --abbrev=0)"
 
       - name: Extract version number
         id: extract_version
         run: |
           $version = "${{ steps.get_tag.outputs.tag }}" -replace 'v1.0.', ''
           echo "::set-output name=version::$version"
+          echo "$version"
 
       - name: Calculate new version
         id: calculate_version
         run: |
           echo "::set-output name=new_version::1.0.$((${{ steps.extract_version.outputs.version }} + 1))"
+          echo "1.0.$((${{ steps.extract_version.outputs.version }} + 1))"
       
       - name: read releaseNote
         id: read_release_note
         run: |
           echo "::set-output name=release_note::$((Get-Content releaseNote.txt | Select-Object -First 20) -join "`r`n")"
-
+          echo "$((Get-Content releaseNote.txt | Select-Object -First 20) -join "`r`n")"
       
       - name: show params
         id: show_param

@@ -43,7 +43,7 @@ jobs:
 
           copy  $Env:GITHUB_WORKSPACE\LobbyMOD\LobbyMOD\bin\Release\LobbyMOD.dll Overcooked-2-LobbyMOD-ResourceFiles
           copy  $Env:GITHUB_WORKSPACE\Overcooked-2-LobbyMOD-ResourceFiles\LobbyMOD.dll CHA
-          copy $Env:GITHUB_WORKSPACE\Overcooked-2-LobbyMOD-ResourceFiles\ConfigurationManager.xml CHA
+          copy  $Env:GITHUB_WORKSPACE\Overcooked-2-LobbyMOD-ResourceFiles\ConfigurationManager.xml CHA
           copy  $Env:GITHUB_WORKSPACE\Overcooked-2-LobbyMOD-ResourceFiles\ConfigurationManager.dll CHA
           copy  $Env:GITHUB_WORKSPACE\Overcooked-2-LobbyMOD-ResourceFiles\ConfigurationManagerAttributes.cs CHA
           copy  $Env:GITHUB_WORKSPACE\Overcooked-2-LobbyMOD-ResourceFiles\Audio\* CHA\Audio
@@ -79,7 +79,7 @@ jobs:
           echo "name: v${{ steps.calculate_version.outputs.new_version }}"
           echo "body: |"
             "v${{ steps.calculate_version.outputs.new_version }} ${{ steps.get_utc8_date.outputs.date_utc8 }}"
-            "${{ (github.event.head_commit.message }}"
+            "${{ github.event.head_commit.message }}"
             "."
             "$((Get-Content releaseNote.txt | Select-Object -First 20) -join "`r`n")"
             "."
@@ -95,7 +95,7 @@ jobs:
           name: v${{ steps.calculate_version.outputs.new_version }}
           body: |
             v${{ steps.calculate_version.outputs.new_version }} ${{ steps.get_utc8_date.outputs.date_utc8 }}
-            ${{ (github.event.head_commit.message }}
+            ${{ github.event.head_commit.message }}
             .
             $((Get-Content releaseNote.txt | Select-Object -First 20) -join "`r`n")
             .

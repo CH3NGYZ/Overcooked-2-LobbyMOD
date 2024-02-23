@@ -18,8 +18,10 @@ jobs:
         
       - name: Get UTC+8 Date
         id: get_utc8_date
-        run: echo "::set-output name=date_utc8::$(TZ=Asia/Shanghai date +'%Y-%m-%d %H:%M:%S')"
-
+        run: |
+          $dateUtc8 = Get-Date -Format "yyyy-MM-dd HH:mm:ss" -TimeZone "Asia/Shanghai"
+          echo "::set-output name=date_utc8::$dateUtc8"
+          
       - name: Copy Project File
         run: |
           copy LobbyMOD.csproj LobbyMOD/LobbyMOD/

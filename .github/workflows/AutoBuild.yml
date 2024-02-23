@@ -90,27 +90,23 @@ jobs:
           echo "body: |"
             "v${{ steps.calculate_version.outputs.new_version }} ${{ steps.get_utc8_date.outputs.date_utc8 }}"
             "${{ github.event.head_commit.message }}"
-            "."
-            "${{ steps.read_release_note.outputs.release_note }}"
-            "."
-            "达到长度限制, 其他日志请查看:"
-            "https://github.com/CH3NGYZ/Overcooked-2-LobbyMOD/blob/main/releaseNote.txt"
+            "其他日志请查看:"
+            "https://github.com/CH3NGYZ/Overcooked-2-LobbyMOD/commits/main"
             
-      # - name: Create Release
-      #   id: create_release
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     files: CHA.zip
-      #     tag_name: v${{ steps.calculate_version.outputs.new_version }}
-      #     name: v${{ steps.calculate_version.outputs.new_version }}
-      #     body: |
-      #       v${{ steps.calculate_version.outputs.new_version }} ${{ steps.get_utc8_date.outputs.date_utc8 }}
-      #       ${{ github.event.head_commit.message }}
-      #       .
-      #       ${{ steps.read_release_note.outputs.release_note }}
-      #       .
-      #       其他日志请查看:
-      #       https://github.com/CH3NGYZ/Overcooked-2-LobbyMOD/blob/main/releaseNote.txt
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: CHA.zip
+          tag_name: v${{ steps.calculate_version.outputs.new_version }}
+          name: v${{ steps.calculate_version.outputs.new_version }}
+          body: |
+            v${{ steps.calculate_version.outputs.new_version }} ${{ steps.get_utc8_date.outputs.date_utc8 }}
+            ${{ github.event.head_commit.message }}
+            其他日志请查看:
+            https://github.com/CH3NGYZ/Overcooked-2-LobbyMOD/commits/main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          
+      - name: Push Tag
+        run: git push origin v${{ steps.calculate_version.outputs.new_version }}

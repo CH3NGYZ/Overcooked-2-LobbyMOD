@@ -72,17 +72,25 @@ jobs:
         id: calculate_version
         run: |
           echo "::set-output name=new_version::1.0.$((${{ steps.extract_version.outputs.version }} + 1))"
-
-      - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: CHA.zip
-          tag_name: v${{ steps.calculate_version.outputs.new_version }}
-          name: v${{ steps.calculate_version.outputs.new_version }}
-          body: |
-            v${{ steps.calculate_version.outputs.new_version }} ${{ steps.get_utc8_date.outputs.date_utc8 }}
-            ${{ github.event.head_commit.message }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: show params
+        id: show_param
+        run: |
+          echo "tag_name: v${{ steps.calculate_version.outputs.new_version }}"
+          echo "name: v${{ steps.calculate_version.outputs.new_version }}"
+          echo "body: |"
+            "v${{ steps.calculate_version.outputs.new_version }} ${{ steps.get_utc8_date.outputs.date_utc8 }}"
+            "${{ github.event.head_commit.message }}"
+            
+      # - name: Create Release
+      #   id: create_release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     files: CHA.zip
+      #     tag_name: v${{ steps.calculate_version.outputs.new_version }}
+      #     name: v${{ steps.calculate_version.outputs.new_version }}
+      #     body: |
+      #       v${{ steps.calculate_version.outputs.new_version }} ${{ steps.get_utc8_date.outputs.date_utc8 }}
+      #       ${{ github.event.head_commit.message }}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
